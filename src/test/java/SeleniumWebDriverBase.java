@@ -15,8 +15,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+
 public class SeleniumWebDriverBase {
+
     private static WebDriver driver;
 
     @BeforeAll
@@ -39,44 +40,34 @@ public class SeleniumWebDriverBase {
     }
 
     @Test
-    @Order(1)
-    public void firstNameTest() {
-        WebElement titleElement = driver.findElement(By.xpath("//*[@id=\"firstName\"]"));
-        titleElement.sendKeys("TestFirstName");
-    }
+    public void demoQATest() {
+        String nameFirst = "TestFirstName";
+        String nameLast = "TestLastName";
+        String mail = "testmail@test.com";
+        String phoneMobile = "0123456789";
+        String subjectSelect = "Computer";
+        String adressCurrent = "Current Location";
+        String state = "NCR";
+        String city = "Gurgaon";
 
-    @Test
-    @Order(2)
-    public void lastNameTest() {
-        WebElement titleElement = driver.findElement(By.xpath("//*[@id=\"lastName\"]"));
-        titleElement.sendKeys("TestLastName");
-    }
+        WebElement firstName = driver.findElement(By.xpath("//*[@id=\"firstName\"]"));
+        firstName.sendKeys(nameFirst);
 
-    @Test
-    @Order(3)
-    public void emailTest() {
-        WebElement titleElement = driver.findElement(By.xpath("//*[@id=\"userEmail\"]"));
-        titleElement.sendKeys("testmail@test.com");
-    }
+        WebElement lastName = driver.findElement(By.xpath("//*[@id=\"lastName\"]"));
+        lastName.sendKeys(nameLast);
 
-    @Test
-    @Order(4)
-    public void genderTest() {
-        WebElement titleElement = driver.findElement(By.xpath("//label[contains(@class,'custom-control-label')]"));
-        titleElement.click();
-    }
+        WebElement eMail = driver.findElement(By.xpath("//*[@id=\"userEmail\"]"));
+        eMail.sendKeys(mail);
 
-    @Test
-    @Order(5)
-    public void telephoneNumberTest() {
-        WebElement titleElement = driver.findElement(By.xpath("//*[@id=\"userNumber\"]"));
-        titleElement.sendKeys("0123456789");
-    }
+        WebElement gender = driver.findElement(By.xpath("//label[contains(@class,'custom-control-label')]"));
+        gender.click();
 
-    @Test
-    @Order(6)
-    public void birthDateTest() {
+        WebElement mobilePhone = driver.findElement(By.xpath("//*[@id=\"userNumber\"]"));
+        mobilePhone.sendKeys(phoneMobile);
+
+// Календарь задается кликами потому что при передаче в инпут поле даты старая дата не очищается. Метод .clear() не помогает или я неправильно его использую.
         WebElement openCalendar = driver.findElement(By.xpath("//*[@id=\"dateOfBirthInput\"]"));
+        openCalendar.sendKeys(Keys.ENTER);
         openCalendar.click();
         WebElement year = driver.findElement(By.xpath("//select[@class='react-datepicker__year-select']"));
         Select selectYear = new Select(year);
@@ -86,87 +77,57 @@ public class SeleniumWebDriverBase {
         selectMonth.selectByValue("1");
         WebElement day = driver.findElement(By.xpath("//div[text()='10']"));
         day.click();
-    }
 
-    @Test
-    @Order(7)
-    public void subjectsTest() {
-        WebElement titleElement = driver.findElement(By.xpath("//*[@id=\"subjectsInput\"]"));
-        titleElement.sendKeys("Computer");
-        titleElement.sendKeys(Keys.RETURN);
-    }
+        WebElement subject = driver.findElement(By.xpath("//*[@id=\"subjectsInput\"]"));
+        subject.sendKeys(subjectSelect);
+        subject.sendKeys(Keys.RETURN);
 
-    @Test
-    @Order(8)
-    public void hobbiesTest() {
-        WebElement titleElement = driver.findElement(By.xpath("//div[@class='custom-control custom-checkbox custom-control-inline']/label[1]"));
-        titleElement.click();
-    }
+        WebElement hobbies = driver.findElement(By.xpath("//div[@class='custom-control custom-checkbox custom-control-inline']/label[1]"));
+        hobbies.click();
 
-    @Test
-    @Order(9)
-    public void pictureTest() {
-        File f = new File("src/test/altai.jpg");
+        File picture = new File("src/test/altai.jpg");
         WebElement fileInput = driver.findElement(By.xpath("//*[@id=\"uploadPicture\"]"));
-        fileInput.sendKeys(f.getAbsolutePath());
-    }
+        fileInput.sendKeys(picture.getAbsolutePath());
 
-    @Test
-    @Order(10)
-    public void currentAdressTest() {
-        WebElement titleElement = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
-        titleElement.sendKeys("Current Location");
-    }
-
-    @Test
-    @Order(11)
-    public void selectStateTest() {
-        WebElement openState = driver.findElement(By.xpath("//*[@id=\"state\"]"));
-        openState.click();
-        WebElement selectState = driver.findElement(By.xpath("//div[text()='NCR']"));
-        selectState.click();
-
-        WebElement openCity = driver.findElement(By.xpath("//*[@id=\"city\"]"));
-        openCity.click();
-        WebElement selectCity = driver.findElement(By.xpath("//div[text()='Gurgaon']"));
-        selectCity.click();
-    }
-
-    @Test
-    @Order(12)
-    public void submitTest() {
-        WebElement titleElement = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
-        titleElement.click();
-    }
+        WebElement currentAdress = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        currentAdress.sendKeys(adressCurrent);
 
 
-    @Test
-    @Order(13)
-    public void assertsCheckTest() {
+        WebElement selectState = driver.findElement(By.xpath("//*[@id=\"react-select-3-input\"]"));
+        selectState.sendKeys(state);
+        selectState.sendKeys(Keys.ENTER);
+
+        WebElement selectCity = driver.findElement(By.xpath("//*[@id=\"react-select-4-input\"]"));
+        selectCity.sendKeys(city);
+        selectCity.sendKeys(Keys.ENTER);
+
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
+        submitButton.click();
+
 
         WebDriverWait wait = new WebDriverWait(driver, 30, 500);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']")));
 
         String checkFirstName = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[1]/td[2]")).getText();
-        Assertions.assertTrue(checkFirstName.contains("TestFirstName"));
+        Assertions.assertTrue(checkFirstName.contains(nameFirst));
 
         String checkLastName = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[1]/td[2]")).getText();
-        Assertions.assertTrue(checkLastName.contains("TestLastName"));
+        Assertions.assertTrue(checkLastName.contains(nameLast));
 
         String checkEmail = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[2]/td[2]")).getText();
-        Assertions.assertTrue(checkEmail.contains("testmail@test.com"));
+        Assertions.assertTrue(checkEmail.contains(mail));
 
         String checkGender = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[3]/td[2]")).getText();
         Assertions.assertTrue(checkGender.contains("Male"));
 
         String checkTelephoneNumber = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[4]/td[2]")).getText();
-        Assertions.assertTrue(checkTelephoneNumber.contains("0123456789"));
+        Assertions.assertTrue(checkTelephoneNumber.contains(phoneMobile));
 
         String checkBirthDate = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[5]/td[2]")).getText();
         Assertions.assertTrue(checkBirthDate.contains("10 February,1990"));
 
         String checkSubject = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[6]/td[2]")).getText();
-        Assertions.assertTrue(checkSubject.contains("Computer"));
+        Assertions.assertTrue(checkSubject.contains(subjectSelect));
 
         String checkHobbies = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[7]/td[2]")).getText();
         Assertions.assertTrue(checkHobbies.contains("Sports"));
@@ -175,20 +136,17 @@ public class SeleniumWebDriverBase {
         Assertions.assertTrue(checkPicture.contains("altai.jpg"));
 
         String checkAdress = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[9]/td[2]")).getText();
-        Assertions.assertTrue(checkAdress.contains("Current Location"));
+        Assertions.assertTrue(checkAdress.contains(adressCurrent));
 
         String checkState = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[10]/td[2]")).getText();
-        Assertions.assertTrue(checkState.contains("NCR"));
+        Assertions.assertTrue(checkState.contains(state));
 
         String checkCity = driver.findElement(By.xpath("//table[@class='table table-dark table-striped table-bordered table-hover']//tr[10]/td[2]")).getText();
-        Assertions.assertTrue(checkCity.contains("Gurgaon"));
+        Assertions.assertTrue(checkCity.contains(city));
     }
 
     @AfterAll
     public static void tearDown() {
-
         driver.quit();
     }
-
-
 }
