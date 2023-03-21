@@ -65,16 +65,16 @@ public class SeleniumWebDriverBase {
         WebElement mobilePhone = driver.findElement(By.xpath("//*[@id=\"userNumber\"]"));
         mobilePhone.sendKeys(phoneMobile);
 
-// Календарь задается кликами потому что при передаче в инпут поле даты старая дата не очищается. Метод .clear() не помогает или я неправильно его использую.
         WebElement openCalendar = driver.findElement(By.xpath("//*[@id=\"dateOfBirthInput\"]"));
-        openCalendar.sendKeys(Keys.ENTER);
         openCalendar.click();
-        WebElement year = driver.findElement(By.xpath("//select[@class='react-datepicker__year-select']"));
-        Select selectYear = new Select(year);
-        selectYear.selectByValue("1990");
-        WebElement month = driver.findElement(By.xpath("//select[@class='react-datepicker__month-select']"));
-        Select selectMonth = new Select(month);
-        selectMonth.selectByValue("1");
+        WebElement openMonth = driver.findElement(By.xpath("//*[@id=\"dateOfBirth\"]//select[@class='react-datepicker__month-select']"));
+        openMonth.click();
+        WebElement selectMonth = driver.findElement(By.xpath("//*[@id=\"dateOfBirth\"]//select[@class='react-datepicker__month-select']/option[2]"));
+        selectMonth.click();
+        WebElement openYear = driver.findElement(By.xpath("//*[@id=\"dateOfBirth\"]//select[@class='react-datepicker__year-select']"));
+        openYear.click();
+        WebElement selectYear = driver.findElement(By.xpath("//*[@id=\"dateOfBirth\"]//select[@class='react-datepicker__year-select']/option[91]"));
+        selectYear.click();
         WebElement day = driver.findElement(By.xpath("//div[text()='10']"));
         day.click();
 
